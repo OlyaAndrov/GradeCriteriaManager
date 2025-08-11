@@ -1,0 +1,61 @@
+<div class="app-container">
+  <mat-card class="header-card">
+    <mat-card-header>
+      <mat-card-title>{{ title }}</mat-card-title>
+      <mat-card-subtitle *ngIf="criteriaData">
+        Rok studiów: {{ criteriaData.studyYear }}
+      </mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>Ładowanie kryteriów...</p>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    <mat-card class="error-card">
+      <mat-card-content>
+        <p class="error-message">{{ error }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div *ngIf="!loading && !error" class="content-container">
+    <mat-card class="thresholds-card">
+      <mat-card-content>
+        <h3>Progi punktowe:</h3>
+        <div class="thresholds">
+          <div class="threshold">
+            <strong>I semestr:</strong> {{ criteriaData?.minPointsThresholdFirstSemester }}
+          </div>
+          <div class="threshold">
+            <strong>II semestr:</strong> {{ criteriaData?.minPointsThresholdSecondSemester }}
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-tab-group class="criteria-tabs">
+      <mat-tab label="I Semestr">
+        <div class="tab-content">
+          <h2>Kryteria oceny - I Semestr</h2>
+          <p class="tab-description">
+            Poniżej przedstawiono wszystkie kryteria oceny dla pierwszego semestru projektu dyplomowego.
+          </p>
+          <app-criteria-table [criteriaGroups]="firstSemesterGroups"></app-criteria-table>
+        </div>
+      </mat-tab>
+      
+      <mat-tab label="II Semestr">
+        <div class="tab-content">
+          <h2>Kryteria oceny - II Semestr</h2>
+          <p class="tab-description">
+            Poniżej przedstawiono wszystkie kryteria oceny dla drugiego semestru projektu dyplomowego.
+          </p>
+          <app-criteria-table [criteriaGroups]="secondSemesterGroups"></app-criteria-table>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

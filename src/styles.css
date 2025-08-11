@@ -1,0 +1,37 @@
+/* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Global Material Design overrides */
+.mat-mdc-card {
+  margin-bottom: 16px;
+}
+
+.mat-mdc-table {
+  width: 100%;
+}
+
+/* Ensure proper spacing for Material components */
+.mat-mdc-tab-body-content {
+  overflow: visible !important;
+}
+
+/* Custom scrollbar for better UX */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

@@ -1,0 +1,55 @@
+<div class="criteria-container">
+  <div *ngFor="let group of criteriaGroups" class="criteria-group">
+    <mat-card class="group-card">
+      <mat-card-header>
+        <mat-card-title>{{ group.name }}</mat-card-title>
+        <mat-card-subtitle>
+          Waga oceny: {{ group.gradeWeightFirstSemester > 0 ? group.gradeWeightFirstSemester : group.gradeWeightSecondSemester }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <table mat-table [dataSource]="group.criteria" class="criteria-table">
+          <!-- Category Column -->
+          <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef>Kategoria</th>
+            <td mat-cell *matCellDef="let criterion">
+              <mat-chip [class]="getCategoryClass(criterion.category)">
+                {{ getCategoryLabel(criterion.category) }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <!-- Points Column -->
+          <ng-container matColumnDef="points">
+            <th mat-header-cell *matHeaderCellDef>Punkty</th>
+            <td mat-cell *matCellDef="let criterion">
+              <span class="points">{{ criterion.points }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Description Column -->
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Opis</th>
+            <td mat-cell *matCellDef="let criterion">
+              <div class="description">{{ criterion.description }}</div>
+            </td>
+          </ng-container>
+
+          <!-- Is Disqualifying Column -->
+          <ng-container matColumnDef="isDisqualifying">
+            <th mat-header-cell *matHeaderCellDef>Dyskwalifikujące</th>
+            <td mat-cell *matCellDef="let criterion">
+              <mat-chip [color]="criterion.isDisqualifying ? 'warn' : 'primary'" selected>
+                {{ criterion.isDisqualifying ? 'Tak' : 'Nie' }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div> 
