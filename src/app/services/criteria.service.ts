@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { CriteriaData, CriteriaSection, CriteriaGroup } from '../models/criteria.interface';
 
 @Injectable({
@@ -65,5 +65,44 @@ export class CriteriaService {
         return groups;
       })
     );
+  }
+  
+  // New methods for working with uploaded data
+  getFirstSemesterGroupsFromData(data: CriteriaData): Observable<CriteriaGroup[]> {
+    return of(this.processFirstSemesterGroups(data));
+  }
+
+  getSecondSemesterGroupsFromData(data: CriteriaData): Observable<CriteriaGroup[]> {
+    return of(this.processSecondSemesterGroups(data));
+  }
+
+  private processFirstSemesterGroups(data: CriteriaData): CriteriaGroup[] {
+    const groups: CriteriaGroup[] = [];
+    data.criteriaSections.forEach(section => {
+      section.criteriaGroups.forEach(group => {
+        if (group.idFirstSemester !== null) {
+          groups.push({
+            ...group,
+            name: `${section.name} - ${group.name}`
+          });
+        }
+      });
+    });
+    return groups;
+  }
+
+  private processSecondSemesterGroups(data: CriteriaData): CriteriaGroup[] {
+    const groups: CriteriaGroup[] = [];
+    data.criteriaSections.forEach(section => {
+      section.criteriaGroups.forEach(group => {
+        if (group.idSecondSemester !== null) {
+          groups.push({
+            ...group,
+            name: `${section.name} - ${group.name}`
+          });
+        }
+      });
+    });
+    return groups;
   }
 } 

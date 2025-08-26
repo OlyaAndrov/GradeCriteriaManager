@@ -5,6 +5,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { CriteriaTableComponent } from './components/criteria-table/criteria-table.component';
 import { CriteriaService } from './services/criteria.service';
 import { CriteriaGroup, CriteriaData } from './models/criteria.interface';
@@ -19,6 +21,8 @@ import { CriteriaGroup, CriteriaData } from './models/criteria.interface';
     MatProgressSpinnerModule,
     MatCardModule,
     MatDividerModule,
+    MatButtonModule,
+    MatIconModule,
     CriteriaTableComponent
   ],
   templateUrl: './app.component.html',
@@ -30,31 +34,49 @@ export class AppComponent implements OnInit {
   firstSemesterGroups: CriteriaGroup[] = [];
   secondSemesterGroups: CriteriaGroup[] = [];
   criteriaData: CriteriaData | null = null;
-  loading = true;
+  loading = false;
   error: string | null = null;
+  fileLoaded = false;
 
   constructor(private criteriaService: CriteriaService) {}
 
   ngOnInit() {
-    this.loadCriteriaData();
+        // Don't load data automatically - wait for file upload
   }
 
-  private loadCriteriaData() {
-    this.criteriaService.getCriteriaData().subscribe({
-      next: (data) => {
-        this.criteriaData = data;
-        this.loadSemesterData();
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.loading = true;
+      this.error = null;
+      
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        try {
+          const jsonData = JSON.parse(e.target.result);
+          this.criteriaData = jsonData;
+          this.loadSemesterData();
+          this.fileLoaded = true;
+          this.loading = false;
+        } catch (error) {
+          this.error = 'Błąd podczas parsowania pliku JSON: ' + error;
+          this.loading = false;
+        }
+      };
+      
+      reader.onerror = () => {
+        this.error = 'Błąd podczas odczytu pliku';
         this.loading = false;
-      },
-      error: (err) => {
-        this.error = 'Błąd podczas ładowania danych: ' + err.message;
-        this.loading = false;
-      }
-    });
+      };
+      
+      reader.readAsText(file);
+    }
   }
 
   private loadSemesterData() {
-    this.criteriaService.getFirstSemesterGroups().subscribe({
+    if (!this.criteriaData) return;
+    
+    this.criteriaService.getFirstSemesterGroupsFromData(this.criteriaData).subscribe({
       next: (groups) => {
         this.firstSemesterGroups = groups;
       },
@@ -63,7 +85,7 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.criteriaService.getSecondSemesterGroups().subscribe({
+    this.criteriaService.getSecondSemesterGroupsFromData(this.criteriaData).subscribe({
       next: (groups) => {
         this.secondSemesterGroups = groups;
       },
@@ -71,5 +93,13 @@ export class AppComponent implements OnInit {
         console.error('Error loading second semester data:', err);
       }
     });
+  }
+  
+  resetFile() {
+    this.fileLoaded = false;
+    this.criteriaData = null;
+    this.firstSemesterGroups = [];
+    this.secondSemesterGroups = [];
+    this.error = null;
   }
 }

@@ -13,32 +13,92 @@
 
 .header-card mat-card-title {
   color: white;
-  font-size: 2em;
+  font-size: 2rem;
   font-weight: 300;
 }
 
 .header-card mat-card-subtitle {
   color: rgba(255, 255, 255, 0.8);
-  font-size: 1.1em;
+  font-size: 1.1rem;
 }
+/* Upload Screen Styles */
+.upload-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  margin: 40px 0;
+}
+
+.upload-card {
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+}
+
+.upload-content {
+  padding: 40px 20px;
+}
+
+.upload-icon {
+  font-size: 4rem;
+  width: 4rem;
+  height: 4rem;
+  color: #667eea;
+  margin-bottom: 20px;
+}
+
+.upload-content h2 {
+  color: #333;
+  margin-bottom: 16px;
+  font-weight: 300;
+}
+
+.upload-content p {
+  color: #666;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.upload-button {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  min-width: 200px;
+}
+
+.upload-button mat-icon {
+  margin-right: 8px;
+}
+
+/* File Controls */
+.file-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+/* Loading and Error States */
 
 .loading-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px;
-  text-align: center;
+  min-height: 200px;
+  margin: 40px 0;
 }
 
 .loading-container p {
-  margin-top: 16px;
+  margin-top: 20px;
   color: #666;
-  font-size: 1.1em;
+  font-size: 1.1rem;
 }
 
 .error-container {
-  padding: 20px;
+  margin: 20px 0;
 }
 
 .error-card {
@@ -49,31 +109,44 @@
 .error-message {
   color: #c62828;
   font-weight: 500;
-  margin: 0;
+  margin-bottom: 16px;
+}
+
+/* Content Container */
+.content-container {
+  margin-top: 20px;
 }
 
 .thresholds-card {
   margin-bottom: 20px;
-  background-color: #e3f2fd;
-  border-left: 4px solid #2196f3;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
 }
 
 .thresholds-card h3 {
-  margin: 0 0 16px 0;
-  color: #1976d2;
-  font-weight: 500;
+  color: white;
+  margin-bottom: 16px;
+  font-weight: 300;
 }
 
 .thresholds {
   display: flex;
-  gap: 40px;
+  gap: 30px;
+  flex-wrap: wrap;
 }
 
 .threshold {
-  font-size: 1.1em;
-  color: #333;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 12px 20px;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
 }
 
+.threshold strong {
+  color: white;
+}
+
+/* Criteria Tabs */
 .criteria-tabs {
   margin-top: 20px;
 }
@@ -84,8 +157,9 @@
 
 .tab-content h2 {
   color: #333;
-  margin-bottom: 8px;
-  font-weight: 400;
+  margin-bottom: 16px;
+  font-weight: 300;
+  font-size: 1.8rem;
 }
 
 .tab-description {
@@ -126,16 +200,25 @@
     padding: 10px;
   }
   
-  .header-card mat-card-title {
-    font-size: 1.5em;
+  .upload-card {
+    margin: 20px 10px;
+  }
+  
+  .upload-content {
+    padding: 30px 15px;
+  }
+  
+  .upload-button {
+    min-width: 180px;
+    padding: 10px 20px;
   }
   
   .thresholds {
     flex-direction: column;
-    gap: 16px;
+    gap: 15px;
   }
   
-  .tab-content {
-    padding: 10px 0;
+  .header-card mat-card-title {
+    font-size: 1.5rem;
   }
 }
