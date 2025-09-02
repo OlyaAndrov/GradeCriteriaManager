@@ -37,11 +37,12 @@ export class AppComponent implements OnInit {
   loading = false;
   error: string | null = null;
   fileLoaded = false;
+  isEditMode = false;
 
   constructor(private criteriaService: CriteriaService) {}
 
   ngOnInit() {
-        // Don't load data automatically - wait for file upload
+    // Don't load data automatically - wait for file upload
   }
 
   onFileSelected(event: any) {
@@ -94,12 +95,48 @@ export class AppComponent implements OnInit {
       }
     });
   }
-  
+
   resetFile() {
     this.fileLoaded = false;
     this.criteriaData = null;
     this.firstSemesterGroups = [];
     this.secondSemesterGroups = [];
     this.error = null;
+    this.isEditMode = false;
+  }
+
+  toggleEditMode() {
+    this.isEditMode = !this.isEditMode;
+  }
+
+  onDataChanged() {
+    // This method will be called when data is changed in edit mode
+    // The criteriaData is automatically updated since we're editing the same objects
+    // We just need to reload the semester data to reflect changes
+    if (this.criteriaData) {
+      this.loadSemesterData();
+    }
+  }
+
+  saveFile() {
+    if (!this.criteriaData) return;
+    
+    // Create a blob with the JSON data
+    const jsonString = JSON.stringify(this.criteriaData, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    
+    // Create a download link
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'criteria.json';
+    
+    // Trigger the download
+    document.body.appendChild(link);
+    link.click();
+    
+    // Clean up
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
   }
 }

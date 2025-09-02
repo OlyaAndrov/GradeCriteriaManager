@@ -66,7 +66,7 @@ export class CriteriaService {
       })
     );
   }
-  
+
   // New methods for working with uploaded data
   getFirstSemesterGroupsFromData(data: CriteriaData): Observable<CriteriaGroup[]> {
     return of(this.processFirstSemesterGroups(data));

@@ -1,43 +1,44 @@
 <div class="app-container">
-  <mat-card class="header-card">
-    <mat-card-header>
-      <mat-card-title>{{ title }}</mat-card-title>
-      <mat-card-subtitle *ngIf="criteriaData">
-        Rok studiów: {{ criteriaData.studyYear }}
-      </mat-card-subtitle>
-    </mat-card-header>
-  </mat-card>
+      <mat-card class="header-card">
+      <mat-card-header>
+        <mat-card-title>{{ title }}</mat-card-title>
+        <mat-card-subtitle *ngIf="criteriaData">
+          Rok studiów: {{ criteriaData.studyYear }}
+          <span *ngIf="isEditMode" class="edit-mode-badge"> | EDIT MODE</span>
+        </mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
 
-    <!-- File Upload Screen -->
-    <div *ngIf="!fileLoaded" class="upload-container">
-      <mat-card class="upload-card">
-        <mat-card-content class="upload-content">
-          <mat-icon class="upload-icon">cloud_upload</mat-icon>
-          <h2>Załaduj plik z kryteriami</h2>
-          <p>Wybierz plik JSON z kryteriami oceny projektu dyplomowego</p>
-          
-          <input
-            type="file"
-            #fileInput
-            accept=".json"
-            (change)="onFileSelected($event)"
-            style="display: none;"
-          />
-          
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="fileInput.click()"
-            [disabled]="loading"
-            class="upload-button"
-          >
-            <mat-icon>upload_file</mat-icon>
-            Load Criteria File
-          </button>
-        </mat-card-content>
-      </mat-card>
-    </div>
-  
+  <!-- File Upload Screen -->
+  <div *ngIf="!fileLoaded" class="upload-container">
+    <mat-card class="upload-card">
+      <mat-card-content class="upload-content">
+        <mat-icon class="upload-icon">cloud_upload</mat-icon>
+        <h2>Załaduj plik z kryteriami</h2>
+        <p>Wybierz plik JSON z kryteriami oceny projektu dyplomowego</p>
+        
+        <input
+          type="file"
+          #fileInput
+          accept=".json"
+          (change)="onFileSelected($event)"
+          style="display: none;"
+        />
+        
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="fileInput.click()"
+          [disabled]="loading"
+          class="upload-button"
+        >
+          <mat-icon>upload_file</mat-icon>
+          Load Criteria File
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
   <div *ngIf="loading" class="loading-container">
     <mat-spinner></mat-spinner>
     <p>Ładowanie kryteriów...</p>
@@ -47,11 +48,34 @@
     <mat-card class="error-card">
       <mat-card-content>
         <p class="error-message">{{ error }}</p>
+        <button mat-button color="primary" (click)="resetFile()">Spróbuj ponownie</button>
       </mat-card-content>
     </mat-card>
   </div>
 
-  <div *ngIf="!loading && !error" class="content-container">
+  <!-- Criteria Interface -->
+  <div *ngIf="fileLoaded && !loading && !error" class="content-container">
+    <!-- Edit Mode Indicator -->
+    <div *ngIf="isEditMode" class="edit-mode-indicator">
+      <mat-icon>edit</mat-icon>
+      Tryb edycji - Wszystkie zmiany są automatycznie zapisywane
+    </div>
+    
+    <div class="file-controls">
+      <button mat-button color="primary" (click)="resetFile()">
+        <mat-icon>delete</mat-icon>
+        Delelete file
+      </button>
+      <button mat-button [color]="isEditMode ? 'accent' : 'primary'" (click)="toggleEditMode()">
+        <mat-icon>{{ isEditMode ? 'visibility' : 'edit' }}</mat-icon>
+        {{ isEditMode ? 'View Mode' : 'Edit Mode' }}
+      </button>
+      <button mat-button color="primary" (click)="saveFile()">
+        <mat-icon>save</mat-icon>
+        Save file
+      </button>
+    </div>
+
     <mat-card class="thresholds-card">
       <mat-card-content>
         <h3>Progi punktowe:</h3>
@@ -73,7 +97,11 @@
           <p class="tab-description">
             Poniżej przedstawiono wszystkie kryteria oceny dla pierwszego semestru projektu dyplomowego.
           </p>
-          <app-criteria-table [criteriaGroups]="firstSemesterGroups"></app-criteria-table>
+          <app-criteria-table 
+            [criteriaGroups]="firstSemesterGroups" 
+            [isEditMode]="isEditMode"
+            (dataChanged)="onDataChanged()">
+          </app-criteria-table>
         </div>
       </mat-tab>
       
@@ -83,7 +111,11 @@
           <p class="tab-description">
             Poniżej przedstawiono wszystkie kryteria oceny dla drugiego semestru projektu dyplomowego.
           </p>
-          <app-criteria-table [criteriaGroups]="secondSemesterGroups"></app-criteria-table>
+          <app-criteria-table 
+            [criteriaGroups]="secondSemesterGroups" 
+            [isEditMode]="isEditMode"
+            (dataChanged)="onDataChanged()">
+          </app-criteria-table>
         </div>
       </mat-tab>
     </mat-tab-group>

@@ -32,6 +32,43 @@
   line-height: 1.4;
 }
 
+/* Edit Mode Styles */
+.edit-description {
+  width: 100%;
+  min-width: 300px;
+}
+
+.edit-description textarea {
+  font-size: 0.9em;
+  line-height: 1.4;
+  resize: vertical;
+}
+
+/* Slide toggle styling */
+mat-slide-toggle {
+  margin: 8px 0;
+}
+
+/* Visual indicators for edit mode */
+.criteria-container.edit-mode {
+  border: 2px solid #ff9800;
+  border-radius: 8px;
+  padding: 18px;
+  background-color: rgba(255, 152, 0, 0.05);
+}
+
+.group-card.edit-mode {
+  border: 1px solid #ff9800;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.2);
+}
+
+.group-card.edit-mode mat-card-header {
+  background-color: rgba(255, 152, 0, 0.1);
+  border-radius: 4px 4px 0 0;
+  margin: -16px -16px 16px -16px;
+  padding: 16px;
+}
+
 .points {
   font-weight: bold;
   font-size: 1.1em;

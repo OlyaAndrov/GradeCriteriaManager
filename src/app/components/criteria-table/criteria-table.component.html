@@ -1,6 +1,6 @@
-<div class="criteria-container">
+<div class="criteria-container" [class.edit-mode]="isEditMode">
   <div *ngFor="let group of criteriaGroups" class="criteria-group">
-    <mat-card class="group-card">
+    <mat-card class="group-card" [class.edit-mode]="isEditMode">
       <mat-card-header>
         <mat-card-title>{{ group.name }}</mat-card-title>
         <mat-card-subtitle>
@@ -31,8 +31,21 @@
           <!-- Description Column -->
           <ng-container matColumnDef="description">
             <th mat-header-cell *matHeaderCellDef>Opis</th>
+            
             <td mat-cell *matCellDef="let criterion">
-              <div class="description">{{ criterion.description }}</div>
+              <!-- View Mode -->
+              <div *ngIf="!isEditMode" class="description">{{ criterion.description || 'Brak opisu' }}</div>
+              <!-- Edit Mode -->
+              <mat-form-field *ngIf="isEditMode" class="edit-description">
+                <textarea 
+                  matInput 
+                  [value]="criterion.description || ''"
+                  (input)="onDescriptionChange(group, $event)"
+                  (blur)="onDescriptionBlur(group, $event)"
+                  rows="2"
+                  placeholder="Wprowadź opis kryterium">
+                </textarea>
+              </mat-form-field>
             </td>
           </ng-container>
 
@@ -40,14 +53,24 @@
           <ng-container matColumnDef="isDisqualifying">
             <th mat-header-cell *matHeaderCellDef>Dyskwalifikujące</th>
             <td mat-cell *matCellDef="let criterion">
-              <mat-chip [color]="criterion.isDisqualifying ? 'warn' : 'primary'" selected>
+              <!-- View Mode -->
+              <mat-chip *ngIf="!isEditMode" [color]="criterion.isDisqualifying ? 'warn' : 'primary'" selected>
                 {{ criterion.isDisqualifying ? 'Tak' : 'Nie' }}
               </mat-chip>
+              <!-- Edit Mode -->
+              <mat-slide-toggle 
+                *ngIf="isEditMode"
+                [checked]="criterion.isDisqualifying || false"
+                (change)="onDisqualifyingChange(group, $event)"
+                (blur)="onDisqualifyingBlur(group, $event)"
+                [color]="'primary'">
+                {{ (criterion.isDisqualifying || false) ? 'Tak' : 'Nie' }}
+              </mat-slide-toggle>
             </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" [attr.data-id]="row.id"></tr>
         </table>
       </mat-card-content>
     </mat-card>

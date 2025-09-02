@@ -21,6 +21,13 @@
   color: rgba(255, 255, 255, 0.8);
   font-size: 1.1rem;
 }
+
+.edit-mode-badge {
+  color: #ffeb3b;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
 /* Upload Screen Styles */
 .upload-container {
   display: flex;
@@ -77,11 +84,34 @@
 .file-controls {
   display: flex;
   justify-content: flex-end;
+  gap: 12px;
   margin-bottom: 20px;
 }
 
-/* Loading and Error States */
+/* Edit Mode Indicator */
+.edit-mode-indicator {
+  background: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
 
+.edit-mode-indicator mat-icon {
+  font-size: 1.1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+/* Loading and Error States */
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -119,7 +149,10 @@
 
 .thresholds-card {
   margin-bottom: 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(
+    135deg,
+    #667eea 0%,
+    #764ba2 100%);
   color: white;
 }
 
@@ -164,9 +197,9 @@
 
 .tab-description {
   color: #666;
-  margin-bottom: 24px;
-  font-size: 1em;
-  line-height: 1.5;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  font-size: 1.1rem;
 }
 
 /* Material Design theme overrides */
@@ -194,7 +227,7 @@
   padding: 20px;
 }
 
-/* Responsive design */
+/* Responsive Design */
 @media (max-width: 768px) {
   .app-container {
     padding: 10px;
